@@ -1,3 +1,4 @@
+const autoBind = require('auto-bind');
 const ClientError = require('../../exceptions/ClientError');
 
 class NotesHandler {
@@ -10,6 +11,8 @@ class NotesHandler {
     this.getNoteByIdHandler = this.getNoteByIdHandler.bind(this);
     this.putNoteByIdHandler = this.putNoteByIdHandler.bind(this);
     this.deleteNoteByIdHandler = this.deleteNoteByIdHandler.bind(this);
+
+    autoBind(this);
   }
 
   async postNoteHandler(request, h) {

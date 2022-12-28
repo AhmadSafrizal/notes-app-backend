@@ -1,3 +1,4 @@
+const autoBind = require('auto-bind');
 const ClientError = require('../../exceptions/ClientError');
 
 class UserHandler {
@@ -7,6 +8,8 @@ class UserHandler {
 
     this.postUserHandler = this.postUserHandler.bind(this);
     this.getUserByIdHandler = this.getUserByIdHandler.bind(this);
+
+    autoBind(this);
   }
 
   async postUserHandler(request, h) {
@@ -67,37 +70,6 @@ class UserHandler {
       }
 
       // server
-      const response = h.response({
-        status: 'error',
-        message: 'Maaf, terjadi kegagalan pada server kami.',
-      });
-      response.code(500);
-      console.error(error);
-      return response;
-    }
-  }
-
-  async getUsersByIdHandler(request, h) {
-    try {
-      const { id } = request.query;
-      const users = await this._service.getUserById(id);
-      return {
-        status: 'success',
-        data: {
-          users,
-        },
-      };
-    } catch (error) {
-      if (error instanceof ClientError) {
-        const response = h.response({
-          status: 'fail',
-          message: error.message,
-        });
-        response.code(error.statusCode);
-        return response;
-      }
-
-      // Server
       const response = h.response({
         status: 'error',
         message: 'Maaf, terjadi kegagalan pada server kami.',
